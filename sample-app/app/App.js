@@ -24,6 +24,11 @@ const App = (function () {
 
             this.setState({});
         },
+        deleteToDoItem: function(index) {
+            this.state.toDoItems.splice(index, 1);
+
+            this.setState({});
+        },
         render: function () {
             const view = this.renderView(
                 `
@@ -39,7 +44,8 @@ const App = (function () {
                     },
                     toDoList: {
                         toDoItems: this.state.toDoItems,
-                        toggleCompleteStatus: (index) => this.toggleCompleteStatus(index)
+                        toggleCompleteStatus: (index) => this.toggleCompleteStatus(index),
+                        deleteToDoItem: (index) => this.deleteToDoItem(index)
                     } 
                 }
             );

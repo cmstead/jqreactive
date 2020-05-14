@@ -63,11 +63,12 @@ const jqreactive = (function () {
             ];
 
             const attachEventListener = (eventName, element) => {
-                $(element).on(eventName, (event) => {
-                    const behaviorName = $(element).attr(eventName);
+                const behaviorName = $(element).attr(eventName);
 
+                $(element).on(eventName, (event) => {
                     event.target = this.getEventTarget(event);
 
+                    // THIS will get you every time!
                     this[behaviorName](event);
                 });
             }

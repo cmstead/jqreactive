@@ -2,18 +2,21 @@ const ToDoForm = (function () {
     const { component } = jqreactive;
 
     function ToDoForm() {
-        this.state = {
+        this.state = stateService.getStateObject('ToDoForm', {
             toDoItem: ''
-        };
+        });
+
+        this.state.onSet((newState) => this.setState(newState));
+        this.state.onUpdate((newState) => this.updateState(newState));
     }
 
     ToDoForm.prototype = {
         handleKeyUp: function (event) {
             const { name, value } = event.target;
 
-            this.updateState({
+            this.state.update({
                 [name]: value
-            });
+            })
         },
         addToDo: function (event) {
             event.preventDefault();
@@ -23,7 +26,7 @@ const ToDoForm = (function () {
                 complete: false
             });
 
-            this.setState({
+            this.state.set({
                 toDoItem: ''
             })
         },
@@ -31,7 +34,11 @@ const ToDoForm = (function () {
             return this.renderView(`
                 <form submit="addToDo">
                     <section class="form-group">
-                        <input type="text" name="toDoItem" value="${this.state.toDoItem}" keyup="handleKeyUp">
+                        <input 
+                            type="text"
+                            name="toDoItem" 
+                            value="${this.state.toDoItem}" 
+                            keyup="handleKeyUp">
                     </section>
                     <section class="form-group">
                         <button>Add it!</button>

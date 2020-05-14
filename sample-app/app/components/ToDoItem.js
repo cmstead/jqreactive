@@ -7,13 +7,20 @@ const ToDoItem = (function () {
         toggleCompleteStatus: function() {
             this.props.toggleCompleteStatus(this.props.index);
         },
+        deleteToDoItem: function(event) {
+            event.preventDefault();
+            
+            this.props.deleteToDoItem(this.props.index);
+        },
         render: function(props) {
             return this.renderView(
-                `<li><input
-                    type="checkbox" 
-                    ${props.item.complete ? 'checked="checked"' : ''}
-                    click="toggleCompleteStatus"
-                /> ${props.item.text}</li>`
+                `<li
+                    class="${props.item.complete ? 'complete' : ''}"
+                    ><input
+                        type="checkbox" 
+                        ${props.item.complete ? 'checked="checked"' : ''}
+                        click="toggleCompleteStatus"
+                    /> ${props.item.text} <a href="#nowhere" click="deleteToDoItem">delete</a></li>`
             )
         }
     }

@@ -12,7 +12,8 @@ const ToDoList = (function () {
             const renderToDoItem = (toDoItem, index) => render(ToDoItem, { 
                 item: toDoItem,
                 index: index,
-                toggleCompleteStatus: props.toggleCompleteStatus
+                toggleCompleteStatus: props.toggleCompleteStatus,
+                deleteToDoItem: props.deleteToDoItem
             });
 
             appendAll(view, props.toDoItems, renderToDoItem);
