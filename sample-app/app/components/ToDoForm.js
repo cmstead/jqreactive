@@ -1,8 +1,9 @@
 const ToDoForm = (function () {
     const { component } = jqreactive;
+    const { getStateObject } = jqrstate;
 
     function ToDoForm() {
-        this.state = stateService.getStateObject('ToDoForm', {
+        this.state = getStateObject('ToDoForm', {
             toDoItem: ''
         });
 

@@ -1,4 +1,4 @@
-const stateService = (function () {
+const jqrstate = (function () {
     const stateDictionary = {};
 
     function updateStateValues(stateObject, newState) {
