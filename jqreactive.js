@@ -1,10 +1,14 @@
 const jqreactive = (function () {
 
     const eventNames = [
+        'blur',
         'change',
         'click',
-        'keyup',
+        'focus',
         'keydown',
+        'keyup',
+        'mousedown',
+        'mouseup',
         'submit'
     ];
 
