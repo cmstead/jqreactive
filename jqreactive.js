@@ -43,9 +43,10 @@ const jqreactive = (function () {
 
         _decorateRender: function (render) {
             this.render = (props = null) => {
+                this._updateCurrentProps(props);
+                
                 const view = render.call(this, props);
 
-                this._updateCurrentProps(props);
                 this._updateCurrentView(view);
 
                 return view;
@@ -65,8 +66,12 @@ const jqreactive = (function () {
             const getPropsName = (element) => $(element).attr('props');
             const getElementProps = (element) => renderProps[getPropsName(element)];
 
-            const loadRenderedComponent = (subComponent) => (_, element) =>
-                $(element).replaceWith(render(subComponent, getElementProps(element)));
+            const loadRenderedComponent = (subComponent) => (_, element) =>{
+                const propsName = getPropsName(element);
+                const elementProps = getElementProps(element);
+
+                $(element).replaceWith(render(subComponent, elementProps))
+            };
 
             const renderSubComponents = (componentName) =>
                 $(view)
@@ -130,6 +135,8 @@ const jqreactive = (function () {
         function Component() {
             BaseComponent.call(this);
             NewComponent.call(this);
+
+            this.name = NewComponent.name;
         }
 
         Component.prototype = Object.create(BaseComponent.prototype);
@@ -153,20 +160,24 @@ const jqreactive = (function () {
         return (new Component()).render(props);
     }
 
-    function appendAll(parentElement, values, mappingFn) {
-        values.forEach(function (value, index) {
-            parentElement.append(mappingFn(value, index));
-        })
-    }
-
     function bootstrap(appRootSelector, AppComponent) {
         $(appRootSelector).append(render(AppComponent));
     }
 
+    function buildPropsFromValues(listValues, keyBase, propsBuilder){
+        return listValues.reduce(
+            (newProps, listValue, index) =>
+                ({
+                    ...newProps,
+                    [keyBase + index]: propsBuilder(listValue, index)
+                }),
+                {}
+        );
+    }
+
     return {
-        appendAll,
+        buildPropsFromValues,
         bootstrap,
-        component,
-        render
+        component
     }
 })();

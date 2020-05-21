@@ -1,24 +1,34 @@
 const ToDoList = (function () {
-    const { appendAll, component, render } = jqreactive;
+    const { buildPropsFromValues, component } = jqreactive;
 
-    function ToDoList() {}
+    function ToDoList() {
+        this.components = {
+            ToDoItem
+        };
+    }
 
     ToDoList.prototype = {
-        render: function(props) {
-            const view = this.renderView(
-                `<ul id="to-do-list"></ul>`
-            );
-
-            const renderToDoItem = (toDoItem, index) => render(ToDoItem, { 
+        buildToDoProp: function (props) {
+            return (toDoItem, index) => ({
                 item: toDoItem,
                 index: index,
                 toggleCompleteStatus: props.toggleCompleteStatus,
                 deleteToDoItem: props.deleteToDoItem
             });
+        },
 
-            appendAll(view, props.toDoItems, renderToDoItem);
-
-            return view;
+        render: function (props) {
+            return this.renderView(`
+                <ul id="to-do-list">
+                    ${
+                props.toDoItems.map((_, index) =>
+                    `<ToDoItem props="${ToDoItem.name + index}"></ToDoItem>`)
+                    .join('\n')
+                }
+                </ul>
+                `,
+                buildPropsFromValues(props.toDoItems, ToDoItem.name, this.buildToDoProp(props))
+            );
         }
     };
 
